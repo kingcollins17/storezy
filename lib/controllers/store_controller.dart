@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:storezy/models/reviews.dart';
@@ -11,20 +13,26 @@ class StoreController extends GetxController {
   final folllowerCount = 0.obs;
   final storeStatus = true.obs;
   final followerList = [].obs;
-  final reviews = <StoreReviews>[].obs;
+  final reviews = <StoreReviews>[
+    StoreReviews(name: 'Ahmed', review: 'This store is so cool'),
+    StoreReviews(name: 'Joseph', review: 'Wow, I love this store'),
+    StoreReviews(name: 'Collins', review: 'The products are so cool')
+  ].obs;
   final storenameEditingController = TextEditingController();
   final reviewEditingController = TextEditingController();
   final followerController = TextEditingController();
   final reviewNameController = TextEditingController();
   int storeFollowerCount = 0;
 
-  static StoreController get to => Get.find();
+  static StoreController get to => Get.find<StoreController>();
 
   @override
   void onInit() {
     super.onInit();
-    reviews.assignAll(repository.readReviews());
+    // final temp = reviews.value;
+    reviews.assignAll([...reviews, ...repository.readReviews()]);
     ever(reviews, (_) => repository.writeReviews(reviews));
+
   }
 
   void incrementStoreFollowers() {

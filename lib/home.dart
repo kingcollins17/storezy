@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:storezy/app_theme.dart';
+import 'package:storezy/constants/constants.dart';
 import 'package:storezy/controllers/store_controller.dart';
 import 'package:storezy/controllers/theme_controller.dart';
 import 'package:storezy/widgets/card.dart';
@@ -53,9 +56,7 @@ class Home extends GetView<StoreController> {
                             fit: FlexFit.tight,
                             child: Text('Store name:'),
                           ),
-                          const SizedBox(
-                            width: 20.0,
-                          ),
+                          const SizedBox(width: 20.0),
                           Obx(
                             () => Flexible(
                                 fit: FlexFit.tight,
@@ -64,9 +65,7 @@ class Home extends GetView<StoreController> {
                           )
                         ],
                       ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
+                      SizedBox(height: 20.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -74,14 +73,25 @@ class Home extends GetView<StoreController> {
                             fit: FlexFit.tight,
                             child: Text('Store followers:'),
                           ),
-                          Text('With Obx:'),
-                          Text('11:'),
-                          Text('With GetBuilder 11:'),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //TASK: With Obx
+                              Obx(() => Text(
+                                  'With Obx: ${controller.folllowerCount}')),
+
+                              //TASK: WITH [GetBuilder]
+                              GetBuilder<StoreController>(
+                                  builder: (controller) {
+                                return Text(
+                                  'With GetBuilder: ${controller.storeFollowerCount}',
+                                );
+                              }),
+                            ],
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
+                      SizedBox(height: 20.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -103,9 +113,23 @@ class Home extends GetView<StoreController> {
                     body: ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 5,
+                      itemCount: temp.length,
                       itemBuilder: (context, index) {
-                        return Text('11');
+                        // return Text('11');
+                        return Row(
+                          children: [
+                            Container(
+                                margin: EdgeInsets.symmetric(vertical: 6),
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: colors(context).secondary),
+                                child: Icon(Icons.person_outline,
+                                    size: 15, color: Colors.white)),
+                            spacer(),
+                            Text(temp[index]),
+                          ],
+                        );
                       },
                     )),
                 const SizedBox(
@@ -130,3 +154,5 @@ class Home extends GetView<StoreController> {
         ));
   }
 }
+
+const temp = ['John', 'Ahmed', 'David', 'Collins'];
